@@ -245,9 +245,20 @@ let dragEl,
 	_prepareGroup = function (options) {
 		function toFn(value, pull) {
 			return function(to, from, dragEl, evt) {
-				let sameGroup = to.options.group.name &&
-								from.options.group.name &&
-								to.options.group.name === from.options.group.name;
+				// let sameGroup = to.options.group.name &&
+				// 				from.options.group.name &&
+				// 				to.options.group.name === from.options.group.name;
+				let sameGroup = to.options.group.name && from.options.group.name;
+				if(sameGroup) {
+					let fromGroup = from.options.group.name.split('|');
+					let toGroup = to.options.group.name.split('|');
+					sameGroup = false;
+					for(var i = 0; !sameGroup && i < fromGroup.length; i++) {
+						for(var j = 0; !sameGroup && j < toGroup.length; j++) {
+							if(fromGroup[i] === toGroup[j]) sameGroup = true;
+						}
+					}
+				}
 
 				if (value == null && (pull || sameGroup)) {
 					// Default pull value
