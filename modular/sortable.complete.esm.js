@@ -1121,7 +1121,22 @@ _detectNearestEmptySortable = function _detectNearestEmptySortable(x, y) {
     _prepareGroup = function _prepareGroup(options) {
   function toFn(value, pull) {
     return function (to, from, dragEl, evt) {
-      var sameGroup = to.options.group.name && from.options.group.name && to.options.group.name === from.options.group.name;
+      // let sameGroup = to.options.group.name &&
+      // 				from.options.group.name &&
+      // 				to.options.group.name === from.options.group.name;
+      var sameGroup = to.options.group.name && from.options.group.name;
+
+      if (sameGroup) {
+        var fromGroup = from.options.group.name.split('|');
+        var toGroup = to.options.group.name.split('|');
+        sameGroup = false;
+
+        for (var i = 0; !sameGroup && i < fromGroup.length; i++) {
+          for (var j = 0; !sameGroup && j < toGroup.length; j++) {
+            if (fromGroup[i] === toGroup[j]) sameGroup = true;
+          }
+        }
+      }
 
       if (value == null && (pull || sameGroup)) {
         // Default pull value
